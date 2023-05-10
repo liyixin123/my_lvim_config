@@ -10,9 +10,9 @@ vim.opt.relativenumber = true
 -- general
 lvim.log.level = "info"
 lvim.format_on_save = {
-  enabled = true,
-  parttern = "*.py,*.lua",
-  timeout = 1000,
+	enabled = true,
+	parttern = "*.py,*.lua",
+	timeout = 1000,
 }
 -- to disable icons and use a minimalist setup, uncomment the following
 -- lvim.use_icons = false
@@ -26,7 +26,6 @@ lvim.keys.insert_mode["jk"] = "<Esc>"
 lvim.keys.normal_mode["<S-l>"] = ":BufferLineCycleNext<CR>"
 lvim.keys.normal_mode["<S-h>"] = ":BufferLineCyclePrev<CR>"
 lvim.keys.normal_mode["<S-q>"] = ":BufferKill<CR>"
-
 
 -- -- Use which-key to add extra bindings with the leader-key prefix
 -- lvim.builtin.which_key.mappings["W"] = { "<cmd>noautocmd w<cr>", "Save without formatting" }
@@ -77,29 +76,33 @@ lvim.builtin.treesitter.auto_install = true
 -- end
 
 -- -- linters and formatters <https://www.lunarvim.org/docs/languages#lintingformatting>
-local formatters = require "lvim.lsp.null-ls.formatters"
-formatters.setup {
-  { command = "stylua" },
-  {
-    command = "prettier",
-    extra_args = { "--print-width", "100" },
-    filetypes = { "typescript", "typescriptreact" },
-  },
-  {
-    name = "black"
-  },
-  { name = "cmake_format", filetypes = "cmake" }
-}
+local formatters = require("lvim.lsp.null-ls.formatters")
+formatters.setup({
+	{ command = "stylua" },
+	{
+		command = "prettier",
+		extra_args = { "--print-width", "100" },
+		filetypes = { "typescript", "typescriptreact" },
+	},
+	{
+		name = "black",
+	},
+	{ name = "cmake_format", filetypes = { "cmake" } },
+	{
+		name = "markdownlint",
+		filetypes = { "markdown" },
+	},
+})
 
-local linters = require "lvim.lsp.null-ls.linters"
-linters.setup {
-  { command = "flake8",     filetypes = { "python" } },
-  {
-    command = "shellcheck",
-    args = { "--severity", "warning" },
-  },
-  { command = "cmake-lint", filetypes = "cmake" },
-}
+local linters = require("lvim.lsp.null-ls.linters")
+linters.setup({
+	{ command = "flake8", filetypes = { "python" } },
+	{
+		command = "shellcheck",
+		args = { "--severity", "warning" },
+	},
+	-- { command = "cmake_lint", filetypes = "cmake" },
+})
 
 -- -- Additional Plugins <https://www.lunarvim.org/docs/plugins#user-plugins>
 -- lvim.plugins = {
@@ -108,6 +111,16 @@ linters.setup {
 --       cmd = "TroubleToggle",
 --     },
 -- }
+lvim.plugins = {
+	{
+		"iamcco/markdown-preview.nvim",
+		ft = "markdown",
+		build = "cd app && npm install",
+		-- build = function()
+		-- 	vim.fn["mkdp#util#install"]()
+		-- end,
+	},
+}
 
 -- -- Autocommands (`:help autocmd`) <https://neovim.io/doc/user/autocmd.html>
 -- vim.api.nvim_create_autocmd("FileType", {
